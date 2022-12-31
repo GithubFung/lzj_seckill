@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.lzj_seckill.pojo")
+@MapperScan("com.lzj_seckill.mapper")
 public class LzjSeckillApplication {
 
     public static void main(String[] args) {
