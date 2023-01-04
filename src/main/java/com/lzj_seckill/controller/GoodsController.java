@@ -25,7 +25,7 @@ public class GoodsController {
 
     /**
      * 跳转商品列表页
-     *
+     * windows优化前QPS:1247
      * @param model
      * @param user
      * @return
