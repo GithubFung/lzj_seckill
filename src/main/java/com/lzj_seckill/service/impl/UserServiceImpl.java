@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         redisTemplate.opsForValue().set("user:" + ticket, user);
         // request.getSession().setAttribute(ticket, user);
         CookieUtil.setCookie(request, response, "userTicket", ticket);
-        return RespBean.success(RespBeanEnum.SUCCESS);
+        return RespBean.success(ticket);
     }
 
     /**
@@ -90,5 +90,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             CookieUtil.setCookie(request, response, "userTicket", userTicket);
         }
         return user;
+    }
+
+    /**
+     * 更新密码，删除Redis中的user缓存
+     *
+     * @param userTicket
+     * @param password
+     * @param request
+     * @param response
+     * @return
+     */
+    @Override
+    public RespBean updatePassword(String userTicket, String password, HttpServletRequest request, HttpServletResponse response) {
+        User user = getUserByCookie(userTicket, request, response);
+        if (user == null) {
+            throw new GlobalException(RespBeanEnum.MOBILE_NOT_EXIST);
+        }
+        user.setPassword(MD5Util.inputPassToDBPass(password, user.getSalt()));
+        int result = userMapper.updateById(user);
+        if (1 == result) {
+            //删除Redis
+            redisTemplate.delete("user:" + userTicket);
+            return RespBean.success();
+        }
+        return RespBean.error(RespBeanEnum.PASSWORD_UPDATE_FAIL);
     }
 }

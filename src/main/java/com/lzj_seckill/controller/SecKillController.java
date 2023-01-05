@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 秒杀
+ * windows优化前QPS:653
  * Created by 小冯 on 2023/1/2 23:33
  */
 @Controller
