@@ -66,6 +66,6 @@ public class MQSender {
      */
     public void sendSeckillMessage(String message) {
         log.info("发送消息：" + message);
-        rabbitTemplate.convertAndSend("seckillExchange", "seckill.message", message);
+        rabbitTemplate.convertAndSend("seckillExchange", "seckill.msg", message);
     }
 }

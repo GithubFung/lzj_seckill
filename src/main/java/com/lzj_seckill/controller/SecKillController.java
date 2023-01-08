@@ -31,6 +31,7 @@ import java.util.Map;
  * 秒杀
  * windows优化前QPS:653
  * 缓存QPS:2054
+ * 优化QPS:2821
  * Created by 小冯 on 2023/1/2 23:33
  */
 @Controller
@@ -117,6 +118,22 @@ public class SecKillController implements InitializingBean {
         return RespBean.success(order);
          */
         //return null;
+    }
+
+    /**
+     * 获取秒杀结果
+     * @param user
+     * @param goodsId
+     * @return orderId:成功；-1:秒杀失败：0:排队中
+     */
+    @RequestMapping(value = "/result",method = RequestMethod.GET)
+    @ResponseBody
+    public RespBean getResult(User user,Long goodsId){
+        if(user == null){
+            return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        Long orderId = seckillOrderService.getResult(user,goodsId);
+        return RespBean.success(orderId);
     }
 
     /**
