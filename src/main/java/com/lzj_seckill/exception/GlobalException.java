@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GlobalException extends  RuntimeException{
+public class GlobalException extends RuntimeException {
     private RespBeanEnum respBeanEnum;
 }

@@ -13,6 +13,8 @@ import com.lzj_seckill.service.IGoodsService;
 import com.lzj_seckill.service.IOrderService;
 import com.lzj_seckill.service.ISeckillGoodsService;
 import com.lzj_seckill.service.ISeckillOrderService;
+import com.lzj_seckill.util.MD5Util;
+import com.lzj_seckill.util.UUIDUtil;
 import com.lzj_seckill.vo.GoodsVo;
 import com.lzj_seckill.vo.OrderDetailVo;
 import com.lzj_seckill.vo.RespBeanEnum;
@@ -21,8 +23,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -63,9 +67,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //解决超买
         boolean result = seckillGoodsService.update(new UpdateWrapper<SeckillGoods>().setSql("stock_count = stock_count - 1").
                 eq("goods_id", goods.getId()).gt("stock_count", 0));
-        if (seckillGoods.getStockCount()<1) {
+        if (seckillGoods.getStockCount() < 1) {
             //判断是否还有库存
-            valueOperations.set("isStockEmpty:"+goods.getId(),"0");
+            valueOperations.set("isStockEmpty:" + goods.getId(), "0");
             return null;
         }
         //生成订单
@@ -107,5 +111,54 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         detail.setOrder(order);
         detail.setGoodsVo(goodsVo);
         return detail;
+    }
+
+    /**
+     * 获取秒杀地址
+     *
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public String createPath(User user, Long goodsId) {
+        String str = MD5Util.md5(UUIDUtil.uuid() + "123456");
+        //秒杀地址存到redis中
+        redisTemplate.opsForValue().set("seckillPath:" + user.getId() + ":" + goodsId, str, 60, TimeUnit.SECONDS);
+        return str;
+    }
+
+    /**
+     * 校验秒杀地址
+     *
+     * @param user
+     * @param goodsId
+     * @param path
+     * @return
+     */
+    @Override
+    public boolean checkPath(User user, Long goodsId, String path) {
+        if (user == null || goodsId < 0 || StringUtils.isEmpty(path)) {
+            return false;
+        }
+        String redisPath = (String) redisTemplate.opsForValue().get("seckillPath:" + user.getId() + ":" + goodsId);
+        return path.equals(redisPath);
+    }
+
+    /**
+     * 校验验证码
+     *
+     * @param user
+     * @param goodsId
+     * @param captcha
+     * @return
+     */
+    @Override
+    public boolean checkCaptche(User user, Long goodsId, String captcha) {
+        if (user == null || goodsId < 0 || StringUtils.isEmpty(captcha)) {
+            return false;
+        }
+        String redisCaptcha = (String) redisTemplate.opsForValue().get("captcha:" + user.getId() + ":" + goodsId);
+        return captcha.equals(redisCaptcha);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author feng
@@ -25,6 +25,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     /**
      * 获取商品列表
+     *
      * @return
      */
     @Override
@@ -34,6 +35,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     /**
      * 获取商品详情
+     *
      * @param goodsId
      * @return
      */

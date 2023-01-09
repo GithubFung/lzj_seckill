@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author feng
@@ -17,14 +17,16 @@ import java.util.List;
 public interface GoodsMapper extends BaseMapper<Goods> {
     /**
      * 获取商品列表
+     *
      * @return
      */
     List<GoodsVo> findGoodsVo();
 
     /**
      * 获取商品详情
-     * @return
+     *
      * @param goodsId
+     * @return
      */
     GoodsVo findGoodsVoByGoodsId(Long goodsId);
 }

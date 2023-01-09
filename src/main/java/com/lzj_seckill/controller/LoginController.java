@@ -25,6 +25,7 @@ public class LoginController {
 
     @Autowired
     private IUserService userService;
+
     /**
      * 跳转登录页面
      *
@@ -45,6 +46,6 @@ public class LoginController {
     @ResponseBody
     //加上@Valid，入参会进行校验
     public RespBean doLogin(@Valid LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
-        return userService.doLogin(loginVo,request,response);
+        return userService.doLogin(loginVo, request, response);
     }
 }

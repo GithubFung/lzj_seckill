@@ -5,7 +5,7 @@ import com.lzj_seckill.pojo.SeckillGoods;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author feng

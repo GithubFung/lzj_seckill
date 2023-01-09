@@ -5,7 +5,7 @@ import com.lzj_seckill.pojo.SeckillGoods;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author feng

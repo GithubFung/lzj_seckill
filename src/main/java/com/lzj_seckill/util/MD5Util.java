@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MD5Util {
+    private static final String salt = "1a2b3c4d";
+
     public static String md5(String src) {
         return DigestUtils.md5Hex(src);
     }
-
-    private static final String salt = "1a2b3c4d";
 
     //第一次加密，前端传到后端
     public static String inputPassToFromPass(String inputPass) {

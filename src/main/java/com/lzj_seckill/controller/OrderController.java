@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class OrderController {
     @Autowired
     private IOrderService orderService;
+
     /**
      * 订单详情
+     *
      * @param user
      * @param orderId
      * @return
@@ -33,7 +35,7 @@ public class OrderController {
     @RequestMapping("detail")
     @ResponseBody
     public RespBean detail(User user, Long orderId) {
-        if(user == null){
+        if (user == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
         OrderDetailVo detail = orderService.detail(orderId);

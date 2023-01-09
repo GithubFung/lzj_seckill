@@ -6,7 +6,7 @@ import com.lzj_seckill.pojo.User;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author feng
@@ -15,6 +15,7 @@ import com.lzj_seckill.pojo.User;
 public interface ISeckillOrderService extends IService<SeckillOrder> {
     /**
      * 获取秒杀结果
+     *
      * @param user
      * @param goodsId
      * @return orderId:成功；-1:秒杀失败：0:排队中
