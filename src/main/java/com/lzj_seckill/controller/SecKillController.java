@@ -1,5 +1,6 @@
 package com.lzj_seckill.controller;
 
+import com.lzj_seckill.config.AccessLimit;
 import com.lzj_seckill.exception.GlobalException;
 import com.lzj_seckill.pojo.Order;
 import com.lzj_seckill.pojo.SeckillMessage;
@@ -13,7 +14,7 @@ import com.lzj_seckill.util.JsonUtil;
 import com.lzj_seckill.vo.GoodsVo;
 import com.lzj_seckill.vo.RespBean;
 import com.lzj_seckill.vo.RespBeanEnum;
-import com.pig4cloud.captcha.SpecCaptcha;
+import com.wf.captcha.SpecCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,6 +163,7 @@ public class SecKillController implements InitializingBean {
      * @param goodsId
      * @return
      */
+    @AccessLimit(second = 5, maxCount = 5, needLogin = true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
     public RespBean getPath(User user, Long goodsId, String captcha, HttpServletRequest request) {
